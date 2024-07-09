@@ -87,20 +87,43 @@ Room *roomRandomizer(int firstRoom, int lastRoom, int *not_occupied,
     r++;
   }
   qsort(rooms, sizeof(rooms) / sizeof(Room), sizeof(Room), roomComparer);
-  return rooms;
+  return &rooms;
 }
 
-void populateDBWithRooms(Room *rooms, int day, int month, int year) {
+int populateDBWithRooms(sqlite3 *db, Room *rooms, int day, int month,
+                        int year) {
   int r = 0;
   for (int i = 0; i < 10; i++) {
-    char stroom1[4];
-    sprintf(stroom1, "%d", rooms[r].room_number);
-    r++;
-    char stroom2[4];
-    sprintf(stroom2, "%d", rooms[r].room_number);
-    r++;
-    char dt_day_str[2];
-    char dt_month_str[2];
-    char dt_year_str[4];
+    time_t rawtime;
+    char formatted_time[80];
+    time(&rawtime);
+    struct tm *timeinfo = localtime(&rawtime);
+    strftime(formatted_time, sizeof(formatted_time), "%d-%m-Y", timeinfo);
+    const char *insertionQuery =
+        "INSERT INTO duty_week (week_start, room_1, room_2) VALUES (?, ?, ?);";
+
+    sqlite3_stmt *stmt;
+    int rc = sqlite3_prepare_v2(db, insertionQuery, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+      // If statement preparation fails, print an error message, close the
+      // database, and exit
+      fprintf(stderr, "Error preparing statement: %s\n", sqlite3_errmsg(db));
+      sqlite3_close(db);
+      return 1;
+    }
+    sqlite3_bind_text(stmt, 1, formatted_time, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 1, rooms[r].room_number);
+    rooms[r].priority = (sizeof(rooms) / sizeof(rooms[0]) / 2) +
+                        ((float)(rand() % 400) / 100 - 2);
+    qsort(rooms, sizeof(rooms) / sizeof(Room), sizeof(Room), roomComparer);
+    int exe = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+      fprintf(stderr, "Error inserting data: %s\n", sqlite3_errmsg(db));
+      sqlite3_close(db);
+      return 1;
+    }
+    sqlite3_finalize(stmt);
   }
+  fprintf(stdout, "Data inserted successfully.\n");
+  return 0;
 }
