@@ -30,7 +30,7 @@ git clone git@github.com:M1ke-Gru/wohnheimDB.git
 
 ### Windows
 
-Paste this in your terminal and press Enter:
+Paste this into Powershell and press Enter:
 
 ```
 python %USERPROFILE%\Desktop\wohnheimDB\table_generator.py 
@@ -38,4 +38,14 @@ python %USERPROFILE%\Desktop\wohnheimDB\table_generator.py
 
 Now go to your Desktop, find wohnheimDB folder and there you find your .xls file.
 
-That is it!
+### Mac
+
+Paste this into Terminal and press Enter:
+
+```
+python ~\Desktop\wohnheimDB\table_generator.py 
+```
+
+Now go to your Desktop, find wohnheimDB folder and there you find your .xls file.
+
+That is it! I hope you enjoy using my script!
