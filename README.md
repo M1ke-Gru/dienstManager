@@ -4,7 +4,7 @@ This is a generator of schedules for who is on duty on which week in a multi-roo
 
 ## Installation
 
-To run this script you have to first install python. This is the [page](https://www.python.org/downloads/) to do that. After that might you need to [install git](https://github.com/git-guides/install-git). After that the steps will depend on your operating system.
+To run this script you have to first install python. This is the [page](https://www.python.org/downloads/) to do that. After that might you need to install git (https://github.com/git-guides/install-git). After that the steps will depend on your operating system.
 
 ### Windows
 
