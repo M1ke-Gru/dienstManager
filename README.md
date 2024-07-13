@@ -33,7 +33,7 @@ git clone git@github.com:M1ke-Gru/wohnheimDB.git
 Paste this in your terminal and press Enter:
 
 ```
-python %USERPROFILE%\Desktop\table_generator.py 
+python %USERPROFILE%\Desktop\wohnheimDB\table_generator.py 
 ```
 
 Now go to your Desktop, find wohnheimDB folder and there you find your .xls file.
